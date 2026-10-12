@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Itinerarios 5º y 6º EE.PP.</title>
+  <meta name="description" content="Asignaturas de 5º y 6º de Enseñanzas Profesionales de Música en Andalucía según especialidad, modalidad e itinerario.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="page-header">
+    <h1>Asignaturas de 5º y 6º</h1>
+    <p class="subtitle">Enseñanzas Profesionales de Música · Andalucía</p>
+  </header>
+
+  <main>
+    <section class="controls" aria-label="Selección">
+      <div class="field">
+        <label for="especialidad">Especialidad</label>
+        <select id="especialidad"></select>
+      </div>
+
+      <div class="field">
+        <span class="field-label" id="itinerario-label">Modalidad e itinerario</span>
+        <div class="modalidades" id="modalidades" role="radiogroup" aria-labelledby="itinerario-label"></div>
+      </div>
+    </section>
+
+    <ul class="legend" aria-label="Leyenda">
+      <li><span class="swatch cat-comun"></span>Comunes</li>
+      <li><span class="swatch cat-especialidad"></span>Propias de la especialidad</li>
+      <li><span class="swatch cat-itinerario"></span>De modalidad / itinerario</li>
+      <li><span class="swatch cat-cruzada"></span>Cruzadas (especialidad × modalidad)</li>
+    </ul>
+    <p class="tip">Toca una asignatura para ver de qué trata.</p>
+
+    <section class="plan" id="plan" aria-live="polite"></section>
+
+    <div class="compare-toggle">
+      <button type="button" id="compare-btn" aria-expanded="false" aria-controls="compare">
+        Comparar los itinerarios
+      </button>
+    </div>
+    <section class="compare" id="compare" hidden></section>
+  </main>
+
+  <footer class="page-footer">
+    <ul>
+      <li>Las horas son <strong>semanales</strong>.</li>
+      <li>La modalidad y el itinerario elegidos en 5º se mantienen en 6º. Consulta en tu centro las condiciones para solicitar un cambio al terminar 5º.</li>
+      <li>La <strong>optativa</strong> de 6º la define cada conservatorio.</li>
+      <li>Fuente: <a href="https://www.juntadeandalucia.es/boja/2007/225/4" target="_blank" rel="noopener">Orden de 25 de octubre de 2007</a> (BOJA nº 225), Anexos I, II y III. Información orientativa, sin validez legal.</li>
+    </ul>
+    <details>
+      <summary>Notas sobre los datos</summary>
+      <ul>
+        <li>En el Anexo II de la Orden, el apartado 7 aparece titulado por error «Especialidades sinfónicas». Según el Anexo III corresponde a <em>Instrumentos de cuerda pulsada del Renacimiento y Barroco</em>; el apartado 1 es el de las especialidades sinfónicas.</li>
+        <li>Guitarra flamenca, 6º: el Anexo III indica 10,5 h totales, pero la suma de sus asignaturas da 11 h (con 2 h de Historia del flamenco, como en Cante flamenco). Aquí se muestra la suma.</li>
+      </ul>
+    </details>
+  </footer>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
