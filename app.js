@@ -139,15 +139,16 @@
         (m) => `
       <fieldset class="modalidad">
         <legend>Modalidad ${m}</legend>
-        ${grupos[m]
+        <div class="seg">${grupos[m]
           .map(
             (op) => `
           <label class="op">
             <input type="radio" name="op" value="${op}" ${op === state.op ? 'checked' : ''}>
-            <span><b>${op}</b> ${op === 'A' ? 'Sin itinerarios' : ITINERARIOS[op].nombre}</span>
+            <span><b>${op}</b> <small>${op === 'A' ? 'Sin itinerarios' : ITINERARIOS[op].nombre}</small></span>
           </label>`
           )
           .join('')}
+        </div>
       </fieldset>`
       )
       .join('');
@@ -155,7 +156,14 @@
 
   // ---------- Render: plan ----------
 
-  function renderCard(e, curso, otraLista) {
+  // Un cuadrado por hora semanal y medio por cada media hora.
+  function pulsos(h) {
+    const enteros = '<span class="pulso"></span>'.repeat(Math.floor(h));
+    const medio = h % 1 ? '<span class="pulso medio"></span>' : '';
+    return `<span class="pulsos" aria-hidden="true">${enteros}${medio}</span>`;
+  }
+
+  function renderCard(e, curso, otraLista, fin) {
     const enOtro = otraLista.some((o) => o.id === e.id);
     let badge = '';
     if (!enOtro) badge = curso === 5 ? '<span class="badge">solo en 5º</span>' : '<span class="badge new">nuevo en 6º</span>';
@@ -166,10 +174,10 @@
         e.claves.map((c) => `<p><strong>${ASIGNATURAS[c].nombre}.</strong> ${ASIGNATURAS[c].hint}</p>`).join('')
       : `<p>${ASIGNATURAS[e.claves[0]].hint}</p>`;
     return `
-      <article class="card cat-${e.cat} c${curso}">
+      <article class="card cat-${e.cat} c${curso}${fin ? ' fin' : ''}">
         <button type="button" class="card-head" aria-expanded="false" aria-controls="${hintId}">
           <span class="card-name">${e.claves.map((c) => ASIGNATURAS[c].nombre).join(' <em>o</em> ')}</span>
-          <span class="card-hours">${horas(e.h)} h</span>
+          <span class="card-right">${pulsos(e.h)}<span class="card-hours">${horas(e.h)}<span class="sr-only"> h</span></span></span>
           <span class="card-tags">
             <span class="chip">${CAT_ETIQUETA[e.cat]}</span>${eleccion ? '<span class="badge">a elegir</span>' : ''}${badge}
           </span>
@@ -193,13 +201,17 @@
       [...l5, ...l6].forEach((e) => {
         if (e.cat === cat && !claves.includes(claveFila(e))) claves.push(claveFila(e));
       });
-      claves.forEach((k) =>
-        filas.push([l5.find((e) => claveFila(e) === k), l6.find((e) => claveFila(e) === k)])
+      claves.forEach((k, i) =>
+        filas.push([
+          l5.find((e) => claveFila(e) === k),
+          l6.find((e) => claveFila(e) === k),
+          i === claves.length - 1, // última fila de su categoría
+        ])
       );
     });
 
     const titulo = `${especialidades[state.esp].nombre} · ${state.op === 'A' ? 'Modalidad A' : state.op + ' ' + nombreOpcion(state.op)}`;
-    const vacio = (curso) => `<div class="card empty c${curso}" aria-hidden="true">—</div>`;
+    const vacio = (curso, fin) => `<div class="card empty c${curso}${fin ? ' fin' : ''}" aria-hidden="true"></div>`;
 
     $plan.innerHTML = `
       <h2 class="plan-title">${titulo}</h2>
@@ -207,7 +219,10 @@
         <h3 class="col-head c5">5º curso <span class="total">${horas(total(l5))} h/semana</span></h3>
         <h3 class="col-head c6">6º curso <span class="total">${horas(total(l6))} h/semana</span></h3>
         ${filas
-          .map(([a, b]) => (a ? renderCard(a, 5, l6) : vacio(5)) + (b ? renderCard(b, 6, l5) : vacio(6)))
+          .map(
+            ([a, b, fin]) =>
+              (a ? renderCard(a, 5, l6, fin) : vacio(5, fin)) + (b ? renderCard(b, 6, l5, fin) : vacio(6, fin))
+          )
           .join('')}
       </div>`;
   }

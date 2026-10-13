@@ -5,7 +5,7 @@ Página estática que muestra las asignaturas de 5º y 6º de Enseñanzas Profes
 - `index.html`: estructura de la página.
 - `data.js`: **todos los datos** (asignaturas, textos de ayuda, horas y planes por especialidad). Para corregir algo, se edita aquí.
 - `app.js`: lógica (selección, tarjetas, comparador, estado en la URL).
-- `styles.css`: estilos (claro/oscuro, móvil, impresión).
+- `styles.css`: estilos (claro/oscuro, móvil, impresión). Tipografía Atkinson Hyperlegible Next, cargada desde Google Fonts (sin conexión se usa la fuente del sistema).
 
 No necesita compilación: basta abrir `index.html` o publicar la carpeta tal cual (p. ej. en GitHub Pages).
 
